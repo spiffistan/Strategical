@@ -18,6 +18,7 @@
 		9AB592B3142783FE000A391C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AB592B1142783FE000A391C /* InfoPlist.strings */; };
 		9AB592B5142783FE000A391C /* StrategicalTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 9AB592B4142783FE000A391C /* StrategicalTests.h */; };
 		9AB592B7142783FE000A391C /* StrategicalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB592B6142783FE000A391C /* StrategicalTests.m */; };
+		9AB592C2142785BC000A391C /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB592C1142785BC000A391C /* CalendarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,20 +37,22 @@
 		9AB5928E142783FD000A391C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		9AB5928F142783FD000A391C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9AB59290142783FD000A391C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		9AB59293142783FD000A391C /* Strategical-Info.plist */ = {isa = PBXFileReference; path = "Strategical-Info.plist"; sourceTree = "<group>"; };
+		9AB59293142783FD000A391C /* Strategical-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Strategical-Info.plist"; sourceTree = "<group>"; };
 		9AB59295142783FD000A391C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9AB59297142783FD000A391C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		9AB59299142783FD000A391C /* Strategical-Prefix.pch */ = {isa = PBXFileReference; path = "Strategical-Prefix.pch"; sourceTree = "<group>"; };
+		9AB59299142783FD000A391C /* Strategical-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Strategical-Prefix.pch"; sourceTree = "<group>"; };
 		9AB5929B142783FD000A391C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		9AB5929D142783FD000A391C /* StrategicalAppDelegate.h */ = {isa = PBXFileReference; path = StrategicalAppDelegate.h; sourceTree = "<group>"; };
+		9AB5929D142783FD000A391C /* StrategicalAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrategicalAppDelegate.h; sourceTree = "<group>"; };
 		9AB5929E142783FD000A391C /* StrategicalAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrategicalAppDelegate.m; sourceTree = "<group>"; };
 		9AB592A1142783FE000A391C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		9AB592A8142783FE000A391C /* StrategicalTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StrategicalTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB592A9142783FE000A391C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		9AB592B0142783FE000A391C /* StrategicalTests-Info.plist */ = {isa = PBXFileReference; path = "StrategicalTests-Info.plist"; sourceTree = "<group>"; };
+		9AB592B0142783FE000A391C /* StrategicalTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StrategicalTests-Info.plist"; sourceTree = "<group>"; };
 		9AB592B2142783FE000A391C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9AB592B4142783FE000A391C /* StrategicalTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrategicalTests.h; sourceTree = "<group>"; };
 		9AB592B6142783FE000A391C /* StrategicalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrategicalTests.m; sourceTree = "<group>"; };
+		9AB592C0142785BC000A391C /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
+		9AB592C1142785BC000A391C /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 			children = (
 				9AB5929D142783FD000A391C /* StrategicalAppDelegate.h */,
 				9AB5929E142783FD000A391C /* StrategicalAppDelegate.m */,
+				9AB592C0142785BC000A391C /* CalendarView.h */,
+				9AB592C1142785BC000A391C /* CalendarView.m */,
 				9AB592A0142783FE000A391C /* MainMenu.xib */,
 				9AB59292142783FD000A391C /* Supporting Files */,
 			);
@@ -264,6 +269,7 @@
 			files = (
 				9AB59298142783FD000A391C /* main.m in Sources */,
 				9AB5929F142783FD000A391C /* StrategicalAppDelegate.m in Sources */,
+				9AB592C2142785BC000A391C /* CalendarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +377,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Strategical/Strategical-Prefix.pch";
+				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = "Strategical/Strategical-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -382,6 +389,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Strategical/Strategical-Prefix.pch";
+				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = "Strategical/Strategical-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
