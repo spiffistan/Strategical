@@ -12,7 +12,14 @@
 {
     NSUInteger dayOfYear;
     
-    NSMutableArray *dayPaths;
+    NSMutableArray *days;
+    
+    BOOL mouseClicked, mouseHovering;
+    
+    NSPoint clickLocation, hoverLocation;
+    
+    NSTrackingArea * trackingArea;
+
 }
 
 

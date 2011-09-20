@@ -1326,7 +1326,7 @@
 			<object class="NSWindowTemplate" id="835800377">
 				<int key="NSWindowStyleMask">8209</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{283, 305}, {900, 900}}</string>
+				<string key="NSWindowRect">{{283, 305}, {1200, 1200}}</string>
 				<int key="NSWTFlags">611845120</int>
 				<string key="NSWindowTitle">Strategical</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -1335,7 +1335,7 @@
 				<object class="NSView" key="NSWindowView" id="682399496">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
-					<string key="NSFrameSize">{900, 900}</string>
+					<string key="NSFrameSize">{1200, 1200}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView"/>
@@ -3068,6 +3068,9 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">537</int>
 						<reference key="object" ref="682399496"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="parent" ref="835800377"/>
 					</object>
 				</object>
@@ -3401,7 +3404,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">538</int>
+			<int key="maxID">540</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
