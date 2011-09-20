@@ -9,5 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 @interface CalendarView : NSView
+{
+    NSUInteger dayOfYear;
+    
+    NSMutableArray *dayPaths;
+}
+
+
 
 @end
