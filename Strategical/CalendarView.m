@@ -6,60 +6,56 @@
 //  Copyright 2011 Capasit. All rights reserved.
 //
 
-#import "CalendarView.h"
+// TODO: add debug methods
+// TODO: map paths to days
+// TODO: connect to google calendar
+// TODO: list events
 
-#define DAYUNITS 365
-#define MONTHUNITS 12
+#import "CalendarView.h"
 
 @implementation CalendarView
 
-- (id)initWithCoder:(NSCoder*)coder
-{
-    if (self = [super initWithCoder:coder]) 
-    {
-        if (self = [super init]) 
-        {
-            mouseHovering = YES;
-            
-            today = [NSDate date];
-            gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-            todayComponents = [gregorian components:NSYearCalendarUnit fromDate:today];
-            dayOfYear = [gregorian ordinalityOfUnit:NSDayCalendarUnit inUnit:NSYearCalendarUnit forDate:today];
-            monthOfYear = [gregorian ordinalityOfUnit:NSMonthCalendarUnit inUnit:NSYearCalendarUnit forDate:today];
-            theYear = [todayComponents year];
-            
-            monthsInYear = [gregorian rangeOfUnit:NSMonthCalendarUnit
-                                               inUnit:NSYearCalendarUnit
-                                              forDate:today].length;
-            
-            for (int i = 1; i <= monthsInYear; i++) 
-            {
-                todayComponents.month = i;
-                NSDate *month = [gregorian dateFromComponents:todayComponents];
-                daysInYear += [gregorian rangeOfUnit:NSDayCalendarUnit
-                                              inUnit:NSMonthCalendarUnit
-                                             forDate:month].length;
-            }
-                        
-
-        }
-    }
-    
-    
-    return [self initWithFrame:self.frame];
-}
+@synthesize dateLabel;
 
 - (id) initWithFrame:(NSRect)frameRect
 {
-    dayPaths = [self createDayPaths];
+    if (self = [super initWithFrame:frameRect]) 
+    {
+        mouseHovering = YES;
         
+        today = [NSDate date];
+        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        todayComponents = [gregorian components:NSYearCalendarUnit fromDate:today];
+        dayOfYear = [gregorian ordinalityOfUnit:NSDayCalendarUnit inUnit:NSYearCalendarUnit forDate:today];
+        monthOfYear = [gregorian ordinalityOfUnit:NSMonthCalendarUnit inUnit:NSYearCalendarUnit forDate:today];
+        theYear = [todayComponents year];
+        
+        monthsInYear = [gregorian rangeOfUnit:NSMonthCalendarUnit
+                                       inUnit:NSYearCalendarUnit
+                                      forDate:today].length;
+        
+        for (int i = 1; i <= monthsInYear; i++) 
+        {
+            todayComponents.month = i;
+            NSDate *month = [gregorian dateFromComponents:todayComponents];
+            daysInYear += [gregorian rangeOfUnit:NSDayCalendarUnit
+                                          inUnit:NSMonthCalendarUnit
+                                         forDate:month].length;
+        }
+    
+        dayPaths = [self createDayPaths];
+        monthPaths = [self createMonthPaths];
+                    
+    }
     return self;
 }
+
+#pragma mark -
+#pragma mark Path creation
 
 - (NSMutableArray *)createDayPaths
 {        
     NSBezierPath *path;
-    
     NSMutableArray *paths = [[NSMutableArray alloc] initWithCapacity:daysInYear];
     
     for (int i = 1; i <= daysInYear; i++)
@@ -74,20 +70,67 @@
     return paths;
 }
 
+- (NSMutableArray *)createMonthPaths
+{
+    NSBezierPath *path;
+    NSMutableArray *paths = [[NSMutableArray alloc] initWithCapacity:monthsInYear];
+    
+    NSRange range;
+    NSUInteger components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
+    NSCalendar *workCalendar = [NSCalendar currentCalendar];
+    NSDate *workDate = [NSDate dateWithNaturalLanguageString:[NSString stringWithFormat:@"January 1, %ld", theYear]];
+    NSDateComponents *work = [workCalendar components:components fromDate:workDate];
+    NSDateComponents *increment = [[NSDateComponents alloc] init];
+    NSUInteger workDayOfYear;
+    
+    while([work year] == theYear) 
+    {   
+        workDayOfYear = [workCalendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSYearCalendarUnit forDate:workDate];
+        
+        range = [workCalendar rangeOfUnit:NSDayCalendarUnit
+                                   inUnit:NSMonthCalendarUnit
+                                  forDate:[workCalendar dateFromComponents:work]];
+        
+        path = [self makeMonthPathFrom:workDayOfYear - 1 to:(workDayOfYear+range.length) - 1];
+        
+        [increment setMonth:1];
+        
+        workDate = [workCalendar dateByAddingComponents:increment toDate:workDate options:0];
+        work = [workCalendar components:components fromDate:workDate];
+        
+        [path closePath];
+        [paths addObject:path];
+    }
+    
+    
+//    for (int i = 1; i <= daysInYear; i++)
+//    {        
+//        path = [self makeMoDayPath:i];
+//        
+//        [path closePath];
+//        
+//        [paths addObject:path];
+//    } 
+    
+    return paths;
+}
+
 #pragma mark -
 #pragma mark Drawing
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-    // TODO Move out into init...
-    
-    [self drawBackground:dirtyRect];
-    [self drawDays:dirtyRect];
+// TODO: Move out into init...
 
+- (void)drawRect:(NSRect)dirtyRect
+{    
+    [self drawBackground:dirtyRect];
+    [self drawMonths:dirtyRect];
+    [self drawDays:dirtyRect];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Draw background
+
+// TODO: refactor center
 
 - (void) drawBackground:(NSRect)dirtyRect
 {
@@ -99,7 +142,7 @@
     NSBezierPath *backgroundPath = [NSBezierPath bezierPath];
     [backgroundPath setLineWidth:1];
     
-    NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 }; // TODO refactor
+    NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 }; 
     
     int radius = 600;
     
@@ -114,12 +157,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Draw days
 
+// TODO: remove month
+// TODO: base on calendar
+// TODO: cleanup
+// TODO: dayPath creation on mouseclicked()?
+
 - (void) drawDays:(NSRect)dirtyRect
 {
-    NSColor *fill; 
-    float alpha = 0.7f;
-    bool toggleDay = YES, toggleMonth = YES; // TODO remove month
-    
+    NSColor *fill, *stroke; 
+    float alpha;
+    bool toggleDay = YES, toggleMonth = YES; 
+        
     for(int i = 0; i < dayPaths.count; i++)
     {
         NSBezierPath *dayPath = (NSBezierPath *) [dayPaths objectAtIndex:i];
@@ -151,28 +199,70 @@
             fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:1.0f alpha:alpha];
         }
         
-        alpha = 0.7f;        
+        //alpha = 0.7f;        
         
         if(mouseClicked && [dayPath containsPoint:clickLocation])
         {            
+            // dayPath = [self makeBigDayPath:i+1];
+            
+            
             fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];
             
         } else if (mouseHovering && [dayPath containsPoint:hoverLocation])
         {            
+            [dateLabel setStringValue:[NSString stringWithFormat:@"%d", i]];
+            
             fill = [NSColor colorWithCalibratedRed:0.7f green:0.5f blue:0.7f alpha:alpha];
             
         }
         
         [fill set];
-        [dayPath fill];
-        
+        [dayPath fill];        
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Draw months
 
+- (void) drawMonths:(NSRect)dirtyRect
+{
+    NSColor *fill;
+    BOOL toggleMonth = YES;
+    float alpha = 0.7f;
+
+    for(int i = 0; i < monthPaths.count; i++)
+    {
+        NSBezierPath *monthPath = (NSBezierPath *) [monthPaths objectAtIndex:i];
+    
+        fill = toggleMonth ? 
+            [NSColor colorWithCalibratedRed:0.7f green:1.0f blue:0.7f alpha:alpha] :
+            [NSColor colorWithCalibratedRed:0.5f green:0.7f blue:0.5f alpha:alpha];
+        
+        toggleMonth = !toggleMonth;
+        
+        if(i == (monthOfYear - 1))
+        {
+            fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:0.0f alpha:alpha];
+        }
+        
+        if([monthPath containsPoint:clickLocation])
+        {
+            // NSLog(@"++ (%0.f,%0.f)", clickLocation.x, clickLocation.y);
+            fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];            
+        }
+        
+        [fill set];
+        
+        [monthPath closePath];
+        [monthPath fill]; 
+    }
+}
+
+// TODO: create months
+/*
 - (void) drawCalendar
 {        
-    /* TODO move to method
+     TODO move to method
 
     NSColor *stroke, *fill; 
     
@@ -193,72 +283,24 @@
     [backgroundPath appendBezierPathWithOvalInRect: frame];
     
     [fill set];    
-    [backgroundPath fill]; */
-    /*
+    [backgroundPath fill]; 
+    
     NSBezierPath *dayPath, *monthPath;
     
-    ////////////////////////////////////////////////////////////////////////////
-    // Draw months
-    
-    NSRange range;
-    NSUInteger components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
-    NSCalendar *workCalendar = [NSCalendar currentCalendar];
-    NSDate *workDate = [NSDate dateWithNaturalLanguageString:[NSString stringWithFormat:@"January 1, %ld", theYear]];
-    NSDateComponents *work = [workCalendar components:components fromDate:workDate];
-    NSDateComponents *increment = [[NSDateComponents alloc] init];
-    NSUInteger workDayOfYear;
 
-            
-    while([work year] == theYear) 
-    {   
-        workDayOfYear = [workCalendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSYearCalendarUnit forDate:workDate];
-        
-        range = [workCalendar rangeOfUnit:NSDayCalendarUnit
-                                   inUnit:NSMonthCalendarUnit
-                                  forDate:[workCalendar dateFromComponents:work]];
-        
-        monthPath = [self makeMonthPathFrom:workDayOfYear - 1 to:(workDayOfYear+range.length) - 1];
-        
-        fill = toggleMonth ? 
-            [NSColor colorWithCalibratedRed:0.7f green:1.0f blue:0.7f alpha:alpha] :
-            [NSColor colorWithCalibratedRed:0.5f green:0.7f blue:0.5f alpha:alpha];
-        
-        toggleMonth = !toggleMonth;
-        
-        if([work month] == monthOfYear)
-        {
-            fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:0.0f alpha:alpha];
-        }
-        
-        if([monthPath containsPoint:clickLocation])
-        {
-            // NSLog(@"++ (%0.f,%0.f)", clickLocation.x, clickLocation.y);
-            fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];            
-        }
-        
-        [fill set];
-        
-        [monthPath closePath];
-        [monthPath fill]; 
-        
-        [increment setMonth:1];
-        
-        workDate = [workCalendar dateByAddingComponents:increment toDate:workDate options:0];
-        work = [workCalendar components:components fromDate:workDate];
-        
-    }*/
-    
 
 }  
+
+ */
+ 
+// TODO: refactor center
 
 - (NSBezierPath *)makeDayPath:(int) i
 {
     NSBezierPath *dayPath = [NSBezierPath bezierPath];
-    NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 };  // TODO refactor
-    
-    // [dayPath moveToPoint:center];
-    
-    float units = DAYUNITS;
+    NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 }; 
+        
+    float units = daysInYear;
     
     float start = ((i/units) * 360.0f) + 0.1f;
     float stop = (((i+1)/units) * 360.0f) - 0.1f;
@@ -281,21 +323,45 @@
     return dayPath;
 }
 
+- (NSBezierPath *)makeBigDayPath:(int) i
+{
+    NSBezierPath *dayPath = [NSBezierPath bezierPath];
+    NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 }; 
+    
+    float units = daysInYear;
+    
+    float start = (((i-2)/units) * 360.0f);
+    float stop = (((i+3)/units) * 360.0f);
+    
+
+    [dayPath appendBezierPathWithArcWithCenter:center 
+                                            radius:300 
+                                        startAngle:start 
+                                          endAngle:stop];
+    
+    [dayPath appendBezierPathWithArcWithCenter:center 
+                                        radius:400 
+                                    startAngle:stop 
+                                      endAngle:start 
+                                     clockwise:YES];
+    
+    return dayPath;
+}
+
 // TODO make real.
 
 - (NSBezierPath *)makeMonthPathFrom:(NSUInteger)fromDay to:(NSUInteger)toDay
 {
     NSBezierPath *monthPath = [NSBezierPath bezierPath];
     NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 }; // TODO refactor
-    
-    float units = DAYUNITS;
+        
+    float units = daysInYear;
     
     float start = ((fromDay/units) * 360.0f);
     float stop = ((toDay/units) * 360.0f);
     
     [monthPath appendBezierPathWithArcWithCenter:center radius:320 startAngle:start endAngle:stop];
     [monthPath appendBezierPathWithArcWithCenter:center radius:330 startAngle:stop endAngle:start clockwise:YES];
-
 
     return monthPath;
 }
@@ -304,6 +370,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Events
+
+// TODO: dragging
 
 #pragma mark -
 #pragma mark Event handling

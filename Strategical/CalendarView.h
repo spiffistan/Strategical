@@ -14,7 +14,7 @@
     NSDate *today;
     NSDateComponents *todayComponents;
     
-    NSMutableArray *dayPaths;
+    NSMutableArray *dayPaths, *monthPaths;
     
     NSUInteger daysInYear, monthsInYear;
     NSUInteger dayOfYear, monthOfYear, theYear;
@@ -23,25 +23,31 @@
     
     NSPoint clickLocation, hoverLocation;
     
+    IBOutlet NSTextField *dateLabel;
+    
     NSTrackingArea* trackingArea;
 
-    enum month {
-        JANUARY = 1,
-        FEBRUARY,
-        MARCH,
-        APRIL,
-        MAY,
-        JUNE,
-        JULY,
-        AUGUST,
-        SEPTEMBER,
-        OCTOBER,
-        NOVEMBER,
-        DECEMBER
-    };
+//    enum month {
+//        JANUARY = 1,
+//        FEBRUARY,
+//        MARCH,
+//        APRIL,
+//        MAY,
+//        JUNE,
+//        JULY,
+//        AUGUST,
+//        SEPTEMBER,
+//        OCTOBER,
+//        NOVEMBER,
+//        DECEMBER
+//    };
     
 }
 
+@property (readwrite, assign) IBOutlet NSTextField *dateLabel;
+
+- (NSMutableArray *)createDayPaths;
+- (NSMutableArray *)createMonthPaths;
 - (NSBezierPath *) makeMonthPathFrom:(NSUInteger)fromDay to:(NSUInteger)toDay;
 
 @end
