@@ -14,7 +14,7 @@
     NSDate *today;
     NSDateComponents *todayComponents;
     
-    NSMutableArray *days;
+    NSMutableArray *dayPaths;
     
     NSUInteger daysInYear, monthsInYear;
     NSUInteger dayOfYear, monthOfYear, theYear;

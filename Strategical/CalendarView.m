@@ -21,7 +21,6 @@
         {
             mouseHovering = YES;
             
-            
             today = [NSDate date];
             gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
             todayComponents = [gregorian components:NSYearCalendarUnit fromDate:today];
@@ -41,18 +40,38 @@
                                               inUnit:NSMonthCalendarUnit
                                              forDate:month].length;
             }
-            
-            days = [[NSMutableArray alloc] initWithCapacity:daysInYear];
+                        
 
         }
     }
     
+    
+    return [self initWithFrame:self.frame];
+}
+
+- (id) initWithFrame:(NSRect)frameRect
+{
+    dayPaths = [self createDayPaths];
+        
     return self;
 }
 
-- (void)createDayPaths
-{
+- (NSMutableArray *)createDayPaths
+{        
+    NSBezierPath *path;
     
+    NSMutableArray *paths = [[NSMutableArray alloc] initWithCapacity:daysInYear];
+    
+    for (int i = 1; i <= daysInYear; i++)
+    {        
+        path = [self makeDayPath:i];
+        
+        [path closePath];
+        
+        [paths addObject:path];
+    } 
+    
+    return paths;
 }
 
 #pragma mark -
@@ -60,18 +79,103 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-
     // TODO Move out into init...
     
-    [self drawCalendar];
+    [self drawBackground:dirtyRect];
+    [self drawDays:dirtyRect];
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Draw background
+
+- (void) drawBackground:(NSRect)dirtyRect
+{
+    NSColor *fill; 
+    float alpha = 0.1f;
+    
+    fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:1.0f alpha:alpha];
+    
+    NSBezierPath *backgroundPath = [NSBezierPath bezierPath];
+    [backgroundPath setLineWidth:1];
+    
+    NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 }; // TODO refactor
+    
+    int radius = 600;
+    
+    NSRect frame = NSMakeRect(center.x - (radius / 2), center.y - (radius / 2), radius, radius);
+    
+    [backgroundPath appendBezierPathWithOvalInRect: frame];
+    
+    [fill set];    
+    [backgroundPath fill]; 
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Draw days
+
+- (void) drawDays:(NSRect)dirtyRect
+{
+    NSColor *fill; 
+    float alpha = 0.7f;
+    bool toggleDay = YES, toggleMonth = YES; // TODO remove month
+    
+    for(int i = 0; i < dayPaths.count; i++)
+    {
+        NSBezierPath *dayPath = (NSBezierPath *) [dayPaths objectAtIndex:i];
+                        
+        if(i >= dayOfYear - 1) 
+            alpha = 1.0f;
+        else 
+            alpha = 0.1f;
+        
+        if(toggleDay) {
+            fill = toggleMonth ? 
+            [NSColor colorWithCalibratedRed:0.9f green:0.9f blue:0.9f alpha:alpha] :
+            [NSColor colorWithCalibratedRed:0.75f green:0.75f blue:0.75f alpha:alpha];
+            toggleDay = NO;
+        } else {
+            fill = toggleMonth ? 
+            [NSColor colorWithCalibratedRed:0.85f green:0.85f blue:0.85f alpha:alpha] :
+            [NSColor colorWithCalibratedRed:0.70f green:0.70f blue:0.70f alpha:alpha];
+            toggleDay = YES;
+        }
+        
+        if(i % 7 == 0) {
+            fill = toggleMonth ? 
+            [NSColor colorWithCalibratedRed:0.7f green:0.8f blue:0.7f alpha:alpha] :
+            [NSColor colorWithCalibratedRed:0.6f green:0.7f blue:0.6f alpha:alpha];
+        }
+        
+        if(i == dayOfYear) {
+            fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:1.0f alpha:alpha];
+        }
+        
+        alpha = 0.7f;        
+        
+        if(mouseClicked && [dayPath containsPoint:clickLocation])
+        {            
+            fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];
+            
+        } else if (mouseHovering && [dayPath containsPoint:hoverLocation])
+        {            
+            fill = [NSColor colorWithCalibratedRed:0.7f green:0.5f blue:0.7f alpha:alpha];
+            
+        }
+        
+        [fill set];
+        [dayPath fill];
+        
+    }
 }
 
 
 - (void) drawCalendar
 {        
+    /* TODO move to method
+
     NSColor *stroke, *fill; 
     
-    bool toggleDay = YES;
     bool toggleMonth = YES;
     float alpha = 0.7f;
         
@@ -89,8 +193,8 @@
     [backgroundPath appendBezierPathWithOvalInRect: frame];
     
     [fill set];    
-    [backgroundPath fill];
-    
+    [backgroundPath fill]; */
+    /*
     NSBezierPath *dayPath, *monthPath;
     
     ////////////////////////////////////////////////////////////////////////////
@@ -142,75 +246,17 @@
         workDate = [workCalendar dateByAddingComponents:increment toDate:workDate options:0];
         work = [workCalendar components:components fromDate:workDate];
         
-    }
+    }*/
     
-    ////////////////////////////////////////////////////////////////////////////
-    // Draw days
-    
-    for (int i = 1; i <= DAYUNITS; i++) 
-    {        
-        dayPath = [self makeDayPath:i];
-                
-        if(i >= dayOfYear) 
-            alpha = 1.0f;
-        else 
-            alpha = 0.1f;
-        
-        if(toggleDay) {
-            fill = toggleMonth ? 
-            [NSColor colorWithCalibratedRed:0.9f green:0.9f blue:0.9f alpha:alpha] :
-            [NSColor colorWithCalibratedRed:0.75f green:0.75f blue:0.75f alpha:alpha];
-            toggleDay = NO;
-        } else {
-            fill = toggleMonth ? 
-            [NSColor colorWithCalibratedRed:0.85f green:0.85f blue:0.85f alpha:alpha] :
-            [NSColor colorWithCalibratedRed:0.70f green:0.70f blue:0.70f alpha:alpha];
-            toggleDay = YES;
-        }
-        
-        if(i % 7 == 0) {
-            fill = toggleMonth ? 
-            [NSColor colorWithCalibratedRed:0.7f green:0.8f blue:0.7f alpha:alpha] :
-            [NSColor colorWithCalibratedRed:0.6f green:0.7f blue:0.6f alpha:alpha];
-        }
-        
-        if(i == dayOfYear) {
-            fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:1.0f alpha:alpha];
-        }
-                
-        if(i % 30 == 0) {
-            // toggleMonth = !toggleMonth;
-        }
-        
-        alpha = 0.7f;        
-        
-        if(mouseClicked && [dayPath containsPoint:clickLocation])
-        {
-            // NSLog(@"++ (%0.f,%0.f)", clickLocation.x, clickLocation.y);
 
-            fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];
-            
-        } else if (mouseHovering && [dayPath containsPoint:hoverLocation])
-        {
-            // NSLog(@".. (%0.f,%0.f)", hoverLocation.x, hoverLocation.y);
-            
-            fill = [NSColor colorWithCalibratedRed:0.7f green:0.5f blue:0.7f alpha:alpha];
-            
-        }
-        
-        [dayPath closePath];
-        
-        [fill set];
-        [dayPath fill];     
-    } 
-}
-
-
+}  
 
 - (NSBezierPath *)makeDayPath:(int) i
 {
     NSBezierPath *dayPath = [NSBezierPath bezierPath];
     NSPoint center = { self.frame.size.width / 2, self.frame.size.height / 2 };  // TODO refactor
+    
+    // [dayPath moveToPoint:center];
     
     float units = DAYUNITS;
     
@@ -218,9 +264,17 @@
     float stop = (((i+1)/units) * 360.0f) - 0.1f;
     
     if(i != dayOfYear)
-        [dayPath appendBezierPathWithArcWithCenter:center radius:330 startAngle:start endAngle:stop];
-    else
-        [dayPath appendBezierPathWithArcWithCenter:center radius:300 startAngle:start endAngle:stop];
+    {
+        [dayPath appendBezierPathWithArcWithCenter:center 
+                                            radius:330 
+                                        startAngle:start 
+                                          endAngle:stop];
+    } else {
+        [dayPath appendBezierPathWithArcWithCenter:center 
+                                            radius:300 
+                                        startAngle:start 
+                                          endAngle:stop];
+    }
         
     [dayPath appendBezierPathWithArcWithCenter:center radius:400 startAngle:stop endAngle:start clockwise:YES];
     
@@ -245,6 +299,11 @@
 
     return monthPath;
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Events
 
 #pragma mark -
 #pragma mark Event handling
@@ -283,7 +342,31 @@
 {
     hoverLocation = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     // NSLog(@".. (%0.f,%0.f)", hoverLocation.x, hoverLocation.y);
-    [self setNeedsDisplay:YES];
+    
+    NSRect rect;
+    NSUInteger offset = 100;
+    BOOL inDayPath = NO;
+    
+    for(NSBezierPath *path in dayPaths)
+    {
+        if([path containsPoint:hoverLocation])
+        {
+            rect = [path bounds];
+            
+            rect.origin.x -= (offset / 2);
+            rect.origin.y -= (offset / 2);
+            rect.size.width += offset;
+            rect.size.height += offset;
+            
+            [self setNeedsDisplayInRect:rect];
+            inDayPath = YES;
+            break;
+        }
+    }
+    
+    if(!inDayPath)
+        [self setNeedsDisplay:YES]; // TODO NSBezierpath under days?
+    
 }
 
 @end
