@@ -10,18 +10,38 @@
 
 @interface CalendarView : NSView
 {
-    NSUInteger dayOfYear;
+    NSCalendar *gregorian;
+    NSDate *today;
+    NSDateComponents *todayComponents;
     
     NSMutableArray *days;
     
+    NSUInteger daysInYear, monthsInYear;
+    NSUInteger dayOfYear, monthOfYear, theYear;
+        
     BOOL mouseClicked, mouseHovering;
     
     NSPoint clickLocation, hoverLocation;
     
-    NSTrackingArea * trackingArea;
+    NSTrackingArea* trackingArea;
 
+    enum month {
+        JANUARY = 1,
+        FEBRUARY,
+        MARCH,
+        APRIL,
+        MAY,
+        JUNE,
+        JULY,
+        AUGUST,
+        SEPTEMBER,
+        OCTOBER,
+        NOVEMBER,
+        DECEMBER
+    };
+    
 }
 
-
+- (NSBezierPath *) makeMonthPathFrom:(NSUInteger)fromDay to:(NSUInteger)toDay;
 
 @end
