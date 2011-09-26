@@ -7,11 +7,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CalendarView.h"
 
 @interface StrategicalAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
+    IBOutlet CalendarView *calendarView;
+    NSView *mainView;
+//    GDataServiceGoogleCalendar *service;
 }
 
 @property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet CalendarView *calendarView;
+@property (assign) IBOutlet NSView *mainView;
 
 @end

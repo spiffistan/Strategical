@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9AA16EA7142B4F6D002C9F27 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA16EA6142B4F6D002C9F27 /* QuartzCore.framework */; };
 		9AB5928C142783FD000A391C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB5928B142783FD000A391C /* Cocoa.framework */; };
 		9AB59296142783FD000A391C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AB59294142783FD000A391C /* InfoPlist.strings */; };
 		9AB59298142783FD000A391C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB59297142783FD000A391C /* main.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9AA16EA6142B4F6D002C9F27 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9AA16EA8142B53AE002C9F27 /* CGSPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSPrivate.h; sourceTree = "<group>"; };
 		9AB59287142783FD000A391C /* Strategical.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strategical.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB5928B142783FD000A391C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		9AB5928E142783FD000A391C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -60,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AA16EA7142B4F6D002C9F27 /* QuartzCore.framework in Frameworks */,
 				9AB5928C142783FD000A391C /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,6 +102,7 @@
 		9AB5928A142783FD000A391C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9AA16EA6142B4F6D002C9F27 /* QuartzCore.framework */,
 				9AB5928B142783FD000A391C /* Cocoa.framework */,
 				9AB592A9142783FE000A391C /* SenTestingKit.framework */,
 				9AB5928D142783FD000A391C /* Other Frameworks */,
@@ -122,6 +127,7 @@
 				9AB5929E142783FD000A391C /* StrategicalAppDelegate.m */,
 				9AB592C0142785BC000A391C /* CalendarView.h */,
 				9AB592C1142785BC000A391C /* CalendarView.m */,
+				9AA16EA8142B53AE002C9F27 /* CGSPrivate.h */,
 				9AB592A0142783FE000A391C /* MainMenu.xib */,
 				9AB59292142783FD000A391C /* Supporting Files */,
 			);
@@ -331,7 +337,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -357,7 +363,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -375,6 +381,11 @@
 		9AB592BB142783FE000A391C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Strategical/Strategical-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -387,6 +398,11 @@
 		9AB592BC142783FE000A391C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Strategical/Strategical-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
