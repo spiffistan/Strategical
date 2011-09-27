@@ -14,6 +14,7 @@
     NSCalendar *calendar;
     NSDate *today;
     NSDateComponents *todayComponents;
+    NSUInteger components;
     
     NSUInteger daysInYear, weeksInYear, monthsInYear;
     NSUInteger dayOfYear, weekOfYear, monthOfYear, theYear;
@@ -40,6 +41,13 @@
     NSColor *colorEvent;
     NSColor *colorHover;
     
+    NSColor *fill, *stroke; 
+    CGFloat alpha;
+    NSUInteger lastWeek;
+    
+    NSRect frame;
+    NSUInteger radius;
+
 }
 
 @property (readwrite, assign) IBOutlet NSTextField *dateLabel;

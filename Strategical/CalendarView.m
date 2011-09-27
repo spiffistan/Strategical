@@ -40,7 +40,7 @@
         colorWeekend = [NSColor darkGrayColor];
         
         today = [NSDate date];
-        NSUInteger components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfYearCalendarUnit);
+        components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfYearCalendarUnit);
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         todayComponents = [calendar components:components fromDate:today];
         
@@ -88,14 +88,12 @@
     NSMutableArray *paths = [[NSMutableArray alloc] initWithCapacity:daysInYear];
     NSMutableArray *dates = [[NSMutableArray alloc] initWithCapacity:daysInYear];
     
-    NSUInteger components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
     NSCalendar *workCalendar = [NSCalendar currentCalendar];
     NSDate *workDate = [NSDate dateWithNaturalLanguageString:[NSString stringWithFormat:@"January 1, %ld", theYear]];
     NSDateComponents *work = [workCalendar components:components fromDate:workDate];
     NSDateComponents *increment = [[NSDateComponents alloc] init];
     NSUInteger workDayOfYear;
     
-    //for (int i = 1; i <= daysInYear; i++)
     while([work year] == theYear)
     {        
         workDayOfYear = [workCalendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSYearCalendarUnit forDate:workDate];
@@ -122,7 +120,6 @@
     NSMutableArray *paths = [[NSMutableArray alloc] initWithCapacity:weeksInYear];
     
     NSRange range;
-    NSUInteger components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekOfYearCalendarUnit);
     NSCalendar *workCalendar = [NSCalendar currentCalendar];
     NSDate *workDate = [NSDate dateWithNaturalLanguageString:[NSString stringWithFormat:@"January 1, %ld", theYear]];
     NSDateComponents *work = [workCalendar components:components fromDate:workDate];
@@ -157,7 +154,6 @@
     NSMutableArray *paths = [[NSMutableArray alloc] initWithCapacity:monthsInYear];
     
     NSRange range;
-    NSUInteger components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit);
     NSCalendar *workCalendar = [NSCalendar currentCalendar];
     NSDate *workDate = [NSDate dateWithNaturalLanguageString:[NSString stringWithFormat:@"January 1, %ld", theYear]];
     NSDateComponents *work = [workCalendar components:components fromDate:workDate];
@@ -172,7 +168,7 @@
                                    inUnit:NSMonthCalendarUnit
                                   forDate:[workCalendar dateFromComponents:work]];
         
-        path = [self makePathFrom:workDayOfYear - 1 to:(workDayOfYear+range.length) - 1];
+        path = [self makePathFrom:workDayOfYear to:(workDayOfYear+range.length)];
         
         [increment setMonth:1];
         
@@ -196,7 +192,7 @@
 #pragma mark Drawing
 
 - (void)drawRect:(NSRect)dirtyRect
-{    
+{   
     [self drawBackground:dirtyRect];
     [self drawMonths:dirtyRect];
     [self drawDays:dirtyRect];
@@ -207,10 +203,7 @@
 
 - (void) drawBackground:(NSRect)dirtyRect
 {
-    NSColor *fill; 
-    NSRect frame;
-    NSUInteger radius;
-    float alpha = 0.1f;
+    alpha = 0.1f;
     
     radius = 800;
     
@@ -239,6 +232,7 @@
     
     [fill set];    
     [centerPath fill]; 
+    [fill release];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -250,22 +244,19 @@
 
 - (void) drawDays:(NSRect)dirtyRect
 {
-    NSColor *fill, *stroke; 
-    float alpha;
-    NSUInteger lastWeek;
-    bool toggleDay = YES, toggleMonth = YES, toggleWeek = YES; 
-    
-    NSUInteger components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfYearCalendarUnit);
+    bool toggleDay = YES, toggleWeek = YES; 
     NSDateComponents *work;
     
     lastWeek = 1;
             
     for(int i = 0; i < dayPaths.count; i++)
-    {
+    {        
         work = [calendar components:components fromDate:[days objectAtIndex:i]];
                 
-        NSBezierPath *dayPath = (NSBezierPath *) [dayPaths objectAtIndex:i];
-                        
+        NSBezierPath *dayPath = (NSBezierPath *) [dayPaths objectAtIndex:i];  
+        
+
+        
         if((i+1) >= dayOfYear) {
             if(toggleWeek) {
                 alpha = 0.7f;
@@ -295,20 +286,24 @@
         if([work weekday] == 1 || [work weekday] == 7) 
             fill = [[NSColor magentaColor] colorWithAlphaComponent:alpha];
             //fill = [NSColor colorWithCalibratedRed:0.6f green:0.6f blue:0.6f alpha:alpha];
-*/
+         */
         /*
         // Date is today
         
         if([[days objectAtIndex:i] isEqualToDate:today]) 
             fill = colorToday;
         */        
+        
+        if(!NSIntersectsRect(dirtyRect, dayPath.bounds))
+            continue;
+        
         if(mouseClicked && [dayPath containsPoint:clickLocation])
         {            
             fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];
             
         } else if (mouseHovering && [dayPath containsPoint:hoverLocation])
         {            
-            NSBezierPath *line = [[NSBezierPath alloc] init];
+            NSBezierPath *line = [NSBezierPath bezierPath];
             
             CGFloat x, y;
             CGFloat units = daysInYear;
@@ -335,7 +330,7 @@
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"EE dd MMM YYYY"];
             NSString *dateString = [dateFormatter stringFromDate:[days objectAtIndex:i]];
-            
+                        
             [dateLabel setStringValue:dateString];
             [dateLabel setFrame:labelFrame];
             [dateLabel sizeToFit];
@@ -357,11 +352,11 @@
             
             [stroke set];
             [line stroke];
-                        
+            
             fill = colorHover;
         }
         [fill set];
-        [dayPath fill];        
+        [dayPath fill];   
     }
 }
 
@@ -370,9 +365,7 @@
 
 - (void) drawMonths:(NSRect)dirtyRect
 {
-    NSColor *fill;
     BOOL toggleMonth = YES;
-    float alpha;
 
     for(int i = 0; i < monthPaths.count; i++)
     {        
@@ -395,7 +388,8 @@
         [fill set];
         
         [monthPath closePath];
-        [monthPath fill]; 
+        [monthPath fill];
+        [monthPath release];
     }
 }
 
@@ -404,9 +398,7 @@
 
 - (void) drawWeeks:(NSRect)dirtyRect
 {
-    NSColor *fill;
     BOOL toggleWeek = YES;
-    float alpha;
     
     for(int i = 0; i < weekPaths.count; i++)
     {        
@@ -433,7 +425,7 @@
     }
 }
  
-- (NSBezierPath *)makeDayPath:(int) i
+- (NSBezierPath *)makeDayPath:(NSUInteger) i
 {
     NSBezierPath *dayPath = [NSBezierPath bezierPath];
         
@@ -456,30 +448,6 @@
                                           endAngle:stop];
     }
         
-    [dayPath appendBezierPathWithArcWithCenter:center 
-                                        radius:radiusDayEnd
-                                    startAngle:stop 
-                                      endAngle:start 
-                                     clockwise:YES];
-    
-    return dayPath;
-}
-
-- (NSBezierPath *)makeBigDayPath:(int) i
-{
-    NSBezierPath *dayPath = [NSBezierPath bezierPath];
-    
-    float units = daysInYear;
-    
-    float start = (((i-2)/units) * 360.0f);
-    float stop = (((i+3)/units) * 360.0f);
-    
-
-    [dayPath appendBezierPathWithArcWithCenter:center 
-                                            radius:radiusDayStart 
-                                        startAngle:start 
-                                          endAngle:stop];
-    
     [dayPath appendBezierPathWithArcWithCenter:center 
                                         radius:radiusDayEnd
                                     startAngle:stop 
@@ -547,7 +515,6 @@
 - (void) mouseMoved:(NSEvent *)theEvent
 {
     hoverLocation = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-    // NSLog(@".. (%0.f,%0.f)", hoverLocation.x, hoverLocation.y);
     
     NSRect rect;
     NSUInteger offset = 400;
