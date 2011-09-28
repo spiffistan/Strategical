@@ -39,10 +39,24 @@
         colorHover = [NSColor greenColor];
         colorWeekend = [NSColor darkGrayColor];
         
+        colorDayPrimary = [NSColor colorWithDeviceRed:(232/255.0f) green:(221.0f/255.0f) blue:(203.0f/255.0f) alpha:1.0f];
+        colorDaySecondary = [NSColor colorWithDeviceRed:(205/255.0f) green:(179.0f/255.0f) blue:(128.0f/255.0f) alpha:1.0f];
+        
+        dateLabel = [[NSTextField alloc] init];
+        dateLabel.font = [NSFont fontWithName:@"Helvetica" size:10];
+        [dateLabel setDrawsBackground:NO];
+        [dateLabel setEditable:NO];
+        [dateLabel setSelectable:NO];
+        [dateLabel setBezeled:NO];
+        [dateLabel setTextColor:[NSColor whiteColor]];
+        
+        labelMargin = 5; // px
+        
         today = [NSDate date];
         components = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfYearCalendarUnit);
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         todayComponents = [calendar components:components fromDate:today];
+        dateFormatter = [[NSDateFormatter alloc] init];
         
         NSLog(@"%ld", [todayComponents month]);
         
@@ -75,6 +89,7 @@
         // weekPaths = [self createWeekPaths];
         monthPaths = [self createMonthPaths];
                     
+        [self addSubview:dateLabel];
     }
     return self;
 }
@@ -238,13 +253,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Draw days
 
-// TODO: remove month
 // TODO: cleanup
 // TODO: dayPath creation on mouseclicked()?
 
 - (void) drawDays:(NSRect)dirtyRect
 {
     bool toggleDay = YES, toggleWeek = YES; 
+
+    CGFloat units = daysInYear;
     NSDateComponents *work;
     
     lastWeek = 1;
@@ -254,8 +270,6 @@
         work = [calendar components:components fromDate:[days objectAtIndex:i]];
                 
         NSBezierPath *dayPath = (NSBezierPath *) [dayPaths objectAtIndex:i];  
-        
-
         
         if((i+1) >= dayOfYear) {
             if(toggleWeek) {
@@ -268,9 +282,9 @@
         }
         
         if(toggleDay) {
-            fill = [NSColor colorWithCalibratedRed:0.85f green:0.85f blue:0.85f alpha:alpha];
+            fill = colorDaySecondary;
         } else {
-            fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:1.0f alpha:alpha];
+            fill = colorDayPrimary;
         }
         
         toggleDay = !toggleDay;
@@ -282,17 +296,14 @@
         
         // Saturday        
         
-        /*
         if([work weekday] == 1 || [work weekday] == 7) 
-            fill = [[NSColor magentaColor] colorWithAlphaComponent:alpha];
-            //fill = [NSColor colorWithCalibratedRed:0.6f green:0.6f blue:0.6f alpha:alpha];
-         */
-        /*
+            fill = [colorWeekend colorWithAlphaComponent:alpha];        
+        
         // Date is today
         
         if([[days objectAtIndex:i] isEqualToDate:today]) 
             fill = colorToday;
-        */        
+                
         
         if(!NSIntersectsRect(dirtyRect, dayPath.bounds))
             continue;
@@ -303,55 +314,47 @@
             
         } else if (mouseHovering && [dayPath containsPoint:hoverLocation])
         {            
-            NSBezierPath *line = [NSBezierPath bezierPath];
-            
-            CGFloat x, y;
-            CGFloat units = daysInYear;
+            workingLine = [NSBezierPath bezierPath];
             
             // i + 1.5 is center of day path
             
             x = cos(2*(M_PI) * ((i+1.5)/units)) * radiusDayEnd; 
             y = sin(2*(M_PI) * ((i+1.5)/units)) * radiusDayEnd; 
             
-            NSPoint edgeOfDay = NSMakePoint((self.frame.size.width / 2) + x, (self.frame.size.height / 2) + y);
+            edgeOfDay = NSMakePoint((self.frame.size.width / 2) + x, (self.frame.size.height / 2) + y);
             
             x = cos(2*(M_PI) * ((i+1.5)/units)) * (radiusDayEnd + 20); 
             y = sin(2*(M_PI) * ((i+1.5)/units)) * (radiusDayEnd + 20); 
             
-            NSPoint labelLineStart = NSMakePoint((self.frame.size.width / 2) + x, (self.frame.size.height / 2) + y);
+            labelLineStart = NSMakePoint((self.frame.size.width / 2) + x, (self.frame.size.height / 2) + y);
                     
-            [line moveToPoint:edgeOfDay];            
-            [line lineToPoint:labelLineStart];
+            [workingLine moveToPoint:edgeOfDay];            
+            [workingLine lineToPoint:labelLineStart];
             
-            // TODO: refactor so label switches place
-                                                
-            NSRect labelFrame = NSMakeRect(labelLineStart.x + 5, labelLineStart.y, 200, 15);
-            
-            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"EE dd MMM YYYY"];
-            NSString *dateString = [dateFormatter stringFromDate:[days objectAtIndex:i]];
-                        
+            dateString = [dateFormatter stringFromDate:[days objectAtIndex:i]];                                                
             [dateLabel setStringValue:dateString];
-            [dateLabel setFrame:labelFrame];
             [dateLabel sizeToFit];
-            
-            NSUInteger labelMargin = 10;
-            
-            int labelLineLength = dateLabel.frame.size.width + labelMargin;
-
-            if(((self.frame.size.width / 2) + x) < (self.frame.size.width / 2))
+                        
+            if(((self.frame.size.width / 2) + x) < (self.frame.size.width / 2)) // Left half
             {
-                labelLineLength = -labelLineLength;
+                labelFrame = NSMakeRect(labelLineStart.x - dateLabel.frame.size.width, labelLineStart.y, dateLabel.frame.size.width, dateLabel.frame.size.height);
+                [dateLabel setFrame:labelFrame];
+                labelLineEnd = NSMakePoint(labelFrame.origin.x, labelFrame.origin.y);
+            } 
+            else // Right half
+            {
+                labelFrame = NSMakeRect(labelLineStart.x, labelLineStart.y, dateLabel.frame.size.width, dateLabel.frame.size.height);
+                [dateLabel setFrame:labelFrame];
+                labelLineEnd = NSMakePoint(labelFrame.origin.x + labelFrame.size.width, labelFrame.origin.y);
             }
-                
-            NSPoint labelLineEnd = NSMakePoint((self.frame.size.width / 2) + x + labelLineLength, (self.frame.size.height / 2) + y);
-            
-            [line lineToPoint:labelLineEnd];
-            
+                        
+            [workingLine lineToPoint:labelLineEnd];
+                        
             stroke = colorHover;
             
             [stroke set];
-            [line stroke];
+            [workingLine stroke];
             
             fill = colorHover;
         }
@@ -520,10 +523,17 @@
     NSUInteger offset = 400;
     BOOL inDayPath = NO;
     
-    for(NSBezierPath *path in dayPaths)
+    for(int i = 0; i < dayPaths.count; i++)
     {
+        NSBezierPath *path = [dayPaths objectAtIndex:i];
+        
         if([path containsPoint:hoverLocation])
         {
+            if(dayHovering == i)
+                break;
+            
+            dayHovering = i;
+            
             rect = [path bounds];
             
             rect.origin.x -= (offset / 2);

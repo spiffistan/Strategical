@@ -32,14 +32,16 @@
     NSUInteger radiusDayStartToday;
     NSPoint clickLocation, hoverLocation;
     
-    IBOutlet NSTextField *dateLabel;
+    NSTextField *dateLabel;
     
     NSTrackingArea* trackingArea;
+    NSUInteger dayHovering;
 
     NSColor *colorToday;
     NSColor *colorWeekend;
     NSColor *colorEvent;
     NSColor *colorHover;
+    NSColor *colorDayPrimary, *colorDaySecondary;
     
     NSColor *fill, *stroke; 
     CGFloat alpha;
@@ -47,7 +49,16 @@
     
     NSRect frame;
     NSUInteger radius;
-
+    
+    NSBezierPath *workingLine;
+    CGFloat x, y;
+    NSPoint edgeOfDay, labelLineStart, labelLineEnd;
+    NSRect labelFrame;
+    
+    NSDateFormatter *dateFormatter;
+    NSString *dateString;
+    NSUInteger labelMargin;
+    
 }
 
 @property (readwrite, assign) IBOutlet NSTextField *dateLabel;
