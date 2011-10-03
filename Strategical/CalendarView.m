@@ -111,10 +111,9 @@
         // weekPaths = [self createWeekPaths];
         monthPaths = [self createMonthPaths];
         
-        monthLabels[0] = [[YLFunTextView alloc] initWithFrame:self.frame];
         
         [self createMonthLabels];
-        [self addSubview:monthLabels[0]];
+        //[self addSubview:monthLabels];
                     
         [self addSubview:dateLabel];
     }
@@ -225,19 +224,29 @@
 }
 
 - (void) createMonthLabels
-{    
-    NSBezierPath *path = [monthPaths objectAtIndex:0];
+{        
+    YLTextStorage *storage[12]; 
     
-    monthLabels[0].layoutManager = [YLBezierLayoutManager layoutManagerWithBezierPath: path];//[path bezierPathByStrippingRedundantElements]];
-
-    YLTextStorage *storage = [YLTextStorage textStorage];
-    NSMutableAttributedString *s = [[[NSMutableAttributedString alloc] initWithString: [NSString stringWithUTF8String: "January"]] autorelease];
     
-        [s setAttributes: [NSDictionary dictionaryWithObjectsAndKeys: [NSFont fontWithName: @"Times" size: 32.0], NSFontAttributeName, nil] range: NSMakeRange(0, [s length])];
-    
-    [storage loadText: s];
-    monthLabels[0].textStorage = storage;
-    
+    for(int i = 0; i < [monthPaths count]; i++)
+    {   
+        NSBezierPath *path = [monthPaths objectAtIndex:i]; 
+        
+        storage[i] = [YLTextStorage textStorage];
+        monthLabels[i] = [[YLFunTextView alloc] initWithFrame:self.frame];
+        
+        monthLabels[i].layoutManager = [YLBezierLayoutManager layoutManagerWithBezierPath: [path bezierPathByStrippingRedundantElements]];
+        
+        NSMutableAttributedString *s = [[[NSMutableAttributedString alloc] initWithString: [NSString stringWithUTF8String: "January"]] autorelease];
+        
+        //[s setAttributes: [NSDictionary dictionaryWithObjectsAndKeys: [NSFont fontWithName: @"Times" size: 32.0], NSFontAttributeName, nil] range: NSMakeRange(0, [s length])];
+        
+        [storage[i] loadText: s];
+        monthLabels[i].textStorage = storage[i];
+        
+        [self addSubview:monthLabels[i]];
+        
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

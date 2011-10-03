@@ -60,14 +60,14 @@ static inline NSRect SmallRectCerterAtPointWithLength(NSPoint p, CGFloat l) {
 }
 
 - (void) drawRect: (NSRect)rect 
-{
+{    
     // Background
-    [[NSColor whiteColor] set];
-    NSRectFill(rect);
+    [[NSColor clearColor] set];
+    NSRectFillUsingOperation(rect, NSCompositeSourceOver);
     
     // Path
-    [[NSColor redColor] set];
-    [self.layoutManager.path stroke];
+    // [[NSColor redColor] set];
+    // [self.layoutManager.path stroke]; 
 
     // Path Control
 //    [self drawControlForPath: self.layoutManager.path nodeColor: [NSColor redColor] handleColor: [NSColor lightGrayColor]];

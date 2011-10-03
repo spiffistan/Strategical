@@ -23,7 +23,6 @@
 		9AB592C2142785BC000A391C /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB592C1142785BC000A391C /* CalendarView.m */; };
 		9ABED205143A2EC30068BBBD /* NSBezierPath+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED204143A2EC30068BBBD /* NSBezierPath+Utility.m */; };
 		9ABED20F143A2EDB0068BBBD /* YLBezierLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED208143A2EDB0068BBBD /* YLBezierLayoutManager.m */; };
-		9ABED210143A2EDB0068BBBD /* YLFunController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED20A143A2EDB0068BBBD /* YLFunController.m */; };
 		9ABED211143A2EDB0068BBBD /* YLFunTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED20C143A2EDB0068BBBD /* YLFunTextView.m */; };
 		9ABED212143A2EDB0068BBBD /* YLTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED20E143A2EDB0068BBBD /* YLTextStorage.m */; };
 /* End PBXBuildFile section */
@@ -68,8 +67,6 @@
 		9ABED204143A2EC30068BBBD /* NSBezierPath+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+Utility.m"; sourceTree = "<group>"; };
 		9ABED207143A2EDB0068BBBD /* YLBezierLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLBezierLayoutManager.h; sourceTree = "<group>"; };
 		9ABED208143A2EDB0068BBBD /* YLBezierLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLBezierLayoutManager.m; sourceTree = "<group>"; };
-		9ABED209143A2EDB0068BBBD /* YLFunController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLFunController.h; sourceTree = "<group>"; };
-		9ABED20A143A2EDB0068BBBD /* YLFunController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLFunController.m; sourceTree = "<group>"; };
 		9ABED20B143A2EDB0068BBBD /* YLFunTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLFunTextView.h; sourceTree = "<group>"; };
 		9ABED20C143A2EDB0068BBBD /* YLFunTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLFunTextView.m; sourceTree = "<group>"; };
 		9ABED20D143A2EDB0068BBBD /* YLTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLTextStorage.h; sourceTree = "<group>"; };
@@ -199,8 +196,6 @@
 			children = (
 				9ABED207143A2EDB0068BBBD /* YLBezierLayoutManager.h */,
 				9ABED208143A2EDB0068BBBD /* YLBezierLayoutManager.m */,
-				9ABED209143A2EDB0068BBBD /* YLFunController.h */,
-				9ABED20A143A2EDB0068BBBD /* YLFunController.m */,
 				9ABED20B143A2EDB0068BBBD /* YLFunTextView.h */,
 				9ABED20C143A2EDB0068BBBD /* YLFunTextView.m */,
 				9ABED20D143A2EDB0068BBBD /* YLTextStorage.h */,
@@ -325,7 +320,6 @@
 				9A68DF4E143339720073DE04 /* NSBezierPath+StrokeExtensions.m in Sources */,
 				9ABED205143A2EC30068BBBD /* NSBezierPath+Utility.m in Sources */,
 				9ABED20F143A2EDB0068BBBD /* YLBezierLayoutManager.m in Sources */,
-				9ABED210143A2EDB0068BBBD /* YLFunController.m in Sources */,
 				9ABED211143A2EDB0068BBBD /* YLFunTextView.m in Sources */,
 				9ABED212143A2EDB0068BBBD /* YLTextStorage.m in Sources */,
 			);
