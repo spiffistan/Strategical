@@ -10,13 +10,22 @@
 // TODO: map paths to days
 // TODO: connect to google calendar
 // TODO: list events
+// TODO: curved labels
+// TODO: locale labels
+// TODO: fullscreen view size
+// TODO: solarized?
+// TODO: different views for different resolutions
 
 #import "CalendarView.h"
-#import <math.h>
+#import "NSBezierPath+StrokeExtensions.h"
+#import "NSBezierPath+Utility.h"
+#import "YLFunTextView.h"
+#import "YLBezierLayoutManager.h"
+#import "YLTextStorage.h"
+
+#include <math.h>
 
 @implementation CalendarView
-
-@synthesize dateLabel;
 
 - (id) initWithFrame:(NSRect)frameRect
 {
@@ -31,19 +40,34 @@
         center.x = self.frame.size.width / 2;
         center.y = self.frame.size.height / 2;
         
-        radiusDayStart = 330;
-        radiusDayEnd = 400;
-        radiusDayStartToday = 300;
+        radiusCenter = 260;
+        radiusDayStart = 290;
+        radiusDayEnd = 350;
+        radiusDayStartToday = 290;
+        radiusDayEndToday = 350;
+        radiusMonthStart = 270;
+        radiusMonthEnd = 285;
+        radiusMonthStartCurrent = 275;
+        radiusMonthEndCurrent = 290;
         
-        colorToday = [NSColor magentaColor];
+        colorToday = [NSColor colorWithDeviceRed:(255/255.0f) green:(255/255.0f) blue:(255/255.0f) alpha:1.0f];
+        colorThisMonth = [NSColor colorWithDeviceRed:(234/255.0f) green:(135/255.0f) blue:(69/255.0f) alpha:1.0f];
+        colorStrokeThisMonth = [NSColor whiteColor];
+        
         colorHover = [NSColor greenColor];
-        colorWeekend = [NSColor darkGrayColor];
+        colorWeekend = [NSColor whiteColor];
         
-        colorDayPrimary = [NSColor colorWithDeviceRed:(232/255.0f) green:(221.0f/255.0f) blue:(203.0f/255.0f) alpha:1.0f];
-        colorDaySecondary = [NSColor colorWithDeviceRed:(205/255.0f) green:(179.0f/255.0f) blue:(128.0f/255.0f) alpha:1.0f];
+        colorDayPrimary = [NSColor colorWithDeviceRed:(222/255.0f) green:(222/255.0f) blue:(222/255.0f) alpha:1.0f];
+        colorDaySecondary = [NSColor colorWithDeviceRed:(180/255.0f) green:(180/255.0f) blue:(180/255.0f) alpha:1.0f];
+        
+        colorMonthPrimary = [NSColor colorWithDeviceRed:(3/255.0f) green:(101/255.0f) blue:(100/255.0f) alpha:1.0f];
+        colorMonthSecondary = [NSColor colorWithDeviceRed:(3/255.0f) green:(54/255.0f) blue:(73/255.0f) alpha:1.0f];
+
+        colorCenter = [NSColor colorWithDeviceRed:(255/255.0f) green:(255/255.0f) blue:(255/255.0f) alpha:1.0f];
         
         dateLabel = [[NSTextField alloc] init];
         dateLabel.font = [NSFont fontWithName:@"Helvetica" size:10];
+        
         [dateLabel setDrawsBackground:NO];
         [dateLabel setEditable:NO];
         [dateLabel setSelectable:NO];
@@ -57,9 +81,7 @@
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         todayComponents = [calendar components:components fromDate:today];
         dateFormatter = [[NSDateFormatter alloc] init];
-        
-        NSLog(@"%ld", [todayComponents month]);
-        
+                
         dayOfYear = [calendar ordinalityOfUnit:NSDayCalendarUnit inUnit:NSYearCalendarUnit forDate:today];
         weekOfYear = [calendar ordinalityOfUnit:NSWeekOfYearCalendarUnit inUnit:NSYearCalendarUnit forDate:today];
         monthOfYear = [calendar ordinalityOfUnit:NSMonthCalendarUnit inUnit:NSYearCalendarUnit forDate:today];
@@ -88,6 +110,11 @@
         
         // weekPaths = [self createWeekPaths];
         monthPaths = [self createMonthPaths];
+        
+        monthLabels[0] = [[YLFunTextView alloc] initWithFrame:self.frame];
+        
+        [self createMonthLabels];
+        [self addSubview:monthLabels[0]];
                     
         [self addSubview:dateLabel];
     }
@@ -128,7 +155,7 @@
     
     return [[NSArray alloc] initWithObjects:paths, dates, nil];
 }
-
+/*
 - (NSMutableArray *)createWeekPaths
 {
     NSBezierPath *path;
@@ -161,7 +188,7 @@
     }
     
     return paths;
-}
+}*/
 
 - (NSMutableArray *)createMonthPaths
 {
@@ -183,7 +210,7 @@
                                    inUnit:NSMonthCalendarUnit
                                   forDate:[workCalendar dateFromComponents:work]];
         
-        path = [self makePathFrom:workDayOfYear to:(workDayOfYear+range.length)];
+        path = [self makeMonthPathFrom:workDayOfYear to:(workDayOfYear+range.length)];
         
         [increment setMonth:1];
         
@@ -197,7 +224,21 @@
     return paths;
 }
 
+- (void) createMonthLabels
+{    
+    NSBezierPath *path = [monthPaths objectAtIndex:0];
+    
+    monthLabels[0].layoutManager = [YLBezierLayoutManager layoutManagerWithBezierPath: path];//[path bezierPathByStrippingRedundantElements]];
 
+    YLTextStorage *storage = [YLTextStorage textStorage];
+    NSMutableAttributedString *s = [[[NSMutableAttributedString alloc] initWithString: [NSString stringWithUTF8String: "January"]] autorelease];
+    
+        [s setAttributes: [NSDictionary dictionaryWithObjectsAndKeys: [NSFont fontWithName: @"Times" size: 32.0], NSFontAttributeName, nil] range: NSMakeRange(0, [s length])];
+    
+    [storage loadText: s];
+    monthLabels[0].textStorage = storage;
+    
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// DRAWING ////////////////////////////////////
@@ -209,8 +250,8 @@
 - (void)drawRect:(NSRect)dirtyRect
 {   
     [self drawBackground:dirtyRect];
-    [self drawMonths:dirtyRect];
     [self drawDays:dirtyRect];
+    [self drawMonths:dirtyRect];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -220,7 +261,7 @@
 {
     alpha = 0.1f;
     
-    radius = 800;
+    radius = (self.frame.size.width / 2);
     
     fill = [NSColor clearColor];
     frame = NSMakeRect(center.x - (radius / 2), center.y - (radius / 2), radius, radius);
@@ -228,7 +269,7 @@
     [fill set];
     [outerMaskPath fill];
     
-    radius = 640;
+    radius = (self.frame.size.width / 2) - radiusDayEnd;
     fill = [NSColor clearColor];
     frame = NSMakeRect(center.x - (radius / 2), center.y - (radius / 2), radius, radius);
     [innerMaskPath appendBezierPathWithOvalInRect: frame];
@@ -237,11 +278,11 @@
     
     // Center ring
     
-    radius = 600;
+    radius = radiusCenter;
     
-    fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:1.0f alpha:alpha];
+    fill = [colorCenter colorWithAlphaComponent:alpha];
     
-    frame = NSMakeRect(center.x - (radius / 2), center.y - (radius / 2), radius, radius);
+    frame = NSMakeRect(center.x - radius, center.y - radius, radius * 2, radius * 2);
     
     [centerPath appendBezierPathWithOvalInRect: frame];
     
@@ -282,9 +323,9 @@
         }
         
         if(toggleDay) {
-            fill = colorDaySecondary;
+            fill = [colorDaySecondary colorWithAlphaComponent:alpha];
         } else {
-            fill = colorDayPrimary;
+            fill = [colorDayPrimary colorWithAlphaComponent:alpha];
         }
         
         toggleDay = !toggleDay;
@@ -295,24 +336,32 @@
         }
         
         // Saturday        
-        
+        /*
         if([work weekday] == 1 || [work weekday] == 7) 
             fill = [colorWeekend colorWithAlphaComponent:alpha];        
-        
+        */
         // Date is today
-        
-        if([[days objectAtIndex:i] isEqualToDate:today]) 
-            fill = colorToday;
-                
-        
+
         if(!NSIntersectsRect(dirtyRect, dayPath.bounds))
             continue;
         
-        if(mouseClicked && [dayPath containsPoint:clickLocation])
+        if((i+1) == dayOfYear) 
+        {
+            fill = [NSColor whiteColor]; //  colorToday;
+
+         
+            
+            [fill set];
+            [dayPath fill];  
+        } 
+        else if (mouseClicked && [dayPath containsPoint:clickLocation])
         {            
             fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];
             
-        } else if (mouseHovering && [dayPath containsPoint:hoverLocation])
+            [fill set];
+            [dayPath fill];  
+        } 
+        else if (mouseHovering && [dayPath containsPoint:hoverLocation])
         {            
             workingLine = [NSBezierPath bezierPath];
             
@@ -357,9 +406,15 @@
             [workingLine stroke];
             
             fill = colorHover;
+            
+            [fill set];
+            [dayPath fill];  
+        } 
+        else 
+        {
+            [fill set];
+            [dayPath fill];  
         }
-        [fill set];
-        [dayPath fill];   
     }
 }
 
@@ -377,22 +432,33 @@
         alpha = ((i+1) < monthOfYear) ? 0.1f : 1.0f;
         
         fill = toggleMonth ? 
-            [NSColor colorWithCalibratedRed:0.7f green:1.0f blue:0.7f alpha:alpha] :
-            [NSColor colorWithCalibratedRed:0.5f green:0.7f blue:0.5f alpha:alpha];
+            [colorMonthPrimary colorWithAlphaComponent:alpha] :
+            [colorMonthSecondary colorWithAlphaComponent:alpha];
         
         toggleMonth = !toggleMonth;
                 
-        if((i+1) == monthOfYear)
-            fill = [NSColor colorWithCalibratedRed:1.0f green:1.0f blue:0.0f alpha:alpha];
-        
-        if([monthPath containsPoint:clickLocation])
+        if((i+1) == monthOfYear) {
+ 
+            fill = [colorThisMonth colorWithAlphaComponent:alpha];
+            [fill set];
+            
+            [monthPath closePath];
+            [monthPath fill];
+            
+        } else if([monthPath containsPoint:clickLocation]) {
             fill = [NSColor colorWithCalibratedRed:1.0f green:0.0f blue:0.0f alpha:alpha];            
         
-        [fill set];
-        
-        [monthPath closePath];
-        [monthPath fill];
-        [monthPath release];
+            [fill set];
+
+            [monthPath closePath];
+            [monthPath fill];
+            
+        } else {
+            [fill set];
+            
+            [monthPath closePath];
+            [monthPath fill];
+        }
     }
 }
 
@@ -444,23 +510,32 @@
                                             radius:radiusDayStart 
                                         startAngle:start 
                                           endAngle:stop];
+        
+        [dayPath appendBezierPathWithArcWithCenter:center 
+                                            radius:radiusDayEnd
+                                        startAngle:stop 
+                                          endAngle:start 
+                                         clockwise:YES];
+        
     } else {
         [dayPath appendBezierPathWithArcWithCenter:center 
                                             radius:radiusDayStartToday
                                         startAngle:start 
                                           endAngle:stop];
+        
+        [dayPath appendBezierPathWithArcWithCenter:center 
+                                            radius:radiusDayEndToday
+                                        startAngle:stop 
+                                          endAngle:start 
+                                         clockwise:YES];
     }
         
-    [dayPath appendBezierPathWithArcWithCenter:center 
-                                        radius:radiusDayEnd
-                                    startAngle:stop 
-                                      endAngle:start 
-                                     clockwise:YES];
+
     
     return dayPath;
 }
 
-- (NSBezierPath *)makePathFrom:(NSUInteger)fromDay to:(NSUInteger)toDay
+- (NSBezierPath *)makeMonthPathFrom:(NSUInteger)fromDay to:(NSUInteger)toDay
 {
     NSBezierPath *monthPath = [NSBezierPath bezierPath];
         
@@ -469,8 +544,8 @@
     float start = ((fromDay/units) * 360.0f);
     float stop = ((toDay/units) * 360.0f);
     
-    [monthPath appendBezierPathWithArcWithCenter:center radius:320 startAngle:start endAngle:stop];
-    [monthPath appendBezierPathWithArcWithCenter:center radius:330 startAngle:stop endAngle:start clockwise:YES];
+    [monthPath appendBezierPathWithArcWithCenter:center radius:radiusMonthStart startAngle:start endAngle:stop];
+    [monthPath appendBezierPathWithArcWithCenter:center radius:radiusMonthEnd startAngle:stop endAngle:start clockwise:YES];
 
     return monthPath;
 }

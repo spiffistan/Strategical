@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A68DF4E143339720073DE04 /* NSBezierPath+StrokeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A68DF4D143339720073DE04 /* NSBezierPath+StrokeExtensions.m */; };
 		9AA16EA7142B4F6D002C9F27 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA16EA6142B4F6D002C9F27 /* QuartzCore.framework */; };
 		9AB5928C142783FD000A391C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB5928B142783FD000A391C /* Cocoa.framework */; };
 		9AB59296142783FD000A391C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AB59294142783FD000A391C /* InfoPlist.strings */; };
@@ -20,6 +21,11 @@
 		9AB592B5142783FE000A391C /* StrategicalTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 9AB592B4142783FE000A391C /* StrategicalTests.h */; };
 		9AB592B7142783FE000A391C /* StrategicalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB592B6142783FE000A391C /* StrategicalTests.m */; };
 		9AB592C2142785BC000A391C /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB592C1142785BC000A391C /* CalendarView.m */; };
+		9ABED205143A2EC30068BBBD /* NSBezierPath+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED204143A2EC30068BBBD /* NSBezierPath+Utility.m */; };
+		9ABED20F143A2EDB0068BBBD /* YLBezierLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED208143A2EDB0068BBBD /* YLBezierLayoutManager.m */; };
+		9ABED210143A2EDB0068BBBD /* YLFunController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED20A143A2EDB0068BBBD /* YLFunController.m */; };
+		9ABED211143A2EDB0068BBBD /* YLFunTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED20C143A2EDB0068BBBD /* YLFunTextView.m */; };
+		9ABED212143A2EDB0068BBBD /* YLTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ABED20E143A2EDB0068BBBD /* YLTextStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A68DF4C143339720073DE04 /* NSBezierPath+StrokeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath+StrokeExtensions.h"; path = "../../../../Downloads/NSBezierPathStrokeInside/NSBezierPath+StrokeExtensions.h"; sourceTree = "<group>"; };
+		9A68DF4D143339720073DE04 /* NSBezierPath+StrokeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath+StrokeExtensions.m"; path = "../../../../Downloads/NSBezierPathStrokeInside/NSBezierPath+StrokeExtensions.m"; sourceTree = "<group>"; };
 		9AA16EA6142B4F6D002C9F27 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9AA16EA8142B53AE002C9F27 /* CGSPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSPrivate.h; sourceTree = "<group>"; };
 		9AB59287142783FD000A391C /* Strategical.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strategical.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +64,16 @@
 		9AB592B6142783FE000A391C /* StrategicalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StrategicalTests.m; sourceTree = "<group>"; };
 		9AB592C0142785BC000A391C /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
 		9AB592C1142785BC000A391C /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
+		9ABED203143A2EC30068BBBD /* NSBezierPath+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBezierPath+Utility.h"; sourceTree = "<group>"; };
+		9ABED204143A2EC30068BBBD /* NSBezierPath+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBezierPath+Utility.m"; sourceTree = "<group>"; };
+		9ABED207143A2EDB0068BBBD /* YLBezierLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLBezierLayoutManager.h; sourceTree = "<group>"; };
+		9ABED208143A2EDB0068BBBD /* YLBezierLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLBezierLayoutManager.m; sourceTree = "<group>"; };
+		9ABED209143A2EDB0068BBBD /* YLFunController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLFunController.h; sourceTree = "<group>"; };
+		9ABED20A143A2EDB0068BBBD /* YLFunController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLFunController.m; sourceTree = "<group>"; };
+		9ABED20B143A2EDB0068BBBD /* YLFunTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLFunTextView.h; sourceTree = "<group>"; };
+		9ABED20C143A2EDB0068BBBD /* YLFunTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLFunTextView.m; sourceTree = "<group>"; };
+		9ABED20D143A2EDB0068BBBD /* YLTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLTextStorage.h; sourceTree = "<group>"; };
+		9ABED20E143A2EDB0068BBBD /* YLTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLTextStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +141,8 @@
 		9AB59291142783FD000A391C /* Strategical */ = {
 			isa = PBXGroup;
 			children = (
+				9ABED201143A2EA40068BBBD /* StrokeExtensions */,
+				9ABED206143A2EC80068BBBD /* FunTextfield */,
 				9AB5929D142783FD000A391C /* StrategicalAppDelegate.h */,
 				9AB5929E142783FD000A391C /* StrategicalAppDelegate.m */,
 				9AB592C0142785BC000A391C /* CalendarView.h */,
@@ -163,6 +183,32 @@
 				9AB592B1142783FE000A391C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9ABED201143A2EA40068BBBD /* StrokeExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				9A68DF4C143339720073DE04 /* NSBezierPath+StrokeExtensions.h */,
+				9A68DF4D143339720073DE04 /* NSBezierPath+StrokeExtensions.m */,
+			);
+			name = StrokeExtensions;
+			sourceTree = "<group>";
+		};
+		9ABED206143A2EC80068BBBD /* FunTextfield */ = {
+			isa = PBXGroup;
+			children = (
+				9ABED207143A2EDB0068BBBD /* YLBezierLayoutManager.h */,
+				9ABED208143A2EDB0068BBBD /* YLBezierLayoutManager.m */,
+				9ABED209143A2EDB0068BBBD /* YLFunController.h */,
+				9ABED20A143A2EDB0068BBBD /* YLFunController.m */,
+				9ABED20B143A2EDB0068BBBD /* YLFunTextView.h */,
+				9ABED20C143A2EDB0068BBBD /* YLFunTextView.m */,
+				9ABED20D143A2EDB0068BBBD /* YLTextStorage.h */,
+				9ABED20E143A2EDB0068BBBD /* YLTextStorage.m */,
+				9ABED203143A2EC30068BBBD /* NSBezierPath+Utility.h */,
+				9ABED204143A2EC30068BBBD /* NSBezierPath+Utility.m */,
+			);
+			name = FunTextfield;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,6 +322,12 @@
 				9AB59298142783FD000A391C /* main.m in Sources */,
 				9AB5929F142783FD000A391C /* StrategicalAppDelegate.m in Sources */,
 				9AB592C2142785BC000A391C /* CalendarView.m in Sources */,
+				9A68DF4E143339720073DE04 /* NSBezierPath+StrokeExtensions.m in Sources */,
+				9ABED205143A2EC30068BBBD /* NSBezierPath+Utility.m in Sources */,
+				9ABED20F143A2EDB0068BBBD /* YLBezierLayoutManager.m in Sources */,
+				9ABED210143A2EDB0068BBBD /* YLFunController.m in Sources */,
+				9ABED211143A2EDB0068BBBD /* YLFunTextView.m in Sources */,
+				9ABED212143A2EDB0068BBBD /* YLTextStorage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

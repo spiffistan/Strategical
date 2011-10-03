@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "YLFunTextView.h"
 
 @interface CalendarView : NSView
 {
@@ -29,19 +30,28 @@
     
     NSPoint center;
     NSUInteger radiusDayStart, radiusDayEnd;
-    NSUInteger radiusDayStartToday;
+    NSUInteger radiusDayStartToday, radiusDayEndToday;
+    NSUInteger radiusMonthStart, radiusMonthEnd;
+    NSUInteger radiusMonthStartCurrent, radiusMonthEndCurrent;
+    NSUInteger radiusCenter;
+    
     NSPoint clickLocation, hoverLocation;
     
     NSTextField *dateLabel;
     
+    YLFunTextView *monthLabels[12];
+    
     NSTrackingArea* trackingArea;
     NSUInteger dayHovering;
 
-    NSColor *colorToday;
+    NSColor *colorToday, *colorThisMonth;
+    NSColor *colorStrokeThisMonth;
     NSColor *colorWeekend;
     NSColor *colorEvent;
     NSColor *colorHover;
     NSColor *colorDayPrimary, *colorDaySecondary;
+    NSColor *colorMonthPrimary, *colorMonthSecondary;
+    NSColor *colorCenter;
     
     NSColor *fill, *stroke; 
     CGFloat alpha;
@@ -70,6 +80,6 @@
 - (void) drawDays:(NSRect)dirtyRect;
 - (void) drawMonths:(NSRect)dirtyRect;
 - (NSBezierPath *) makeDayPath:(NSUInteger)i;
-- (NSBezierPath *) makePathFrom:(NSUInteger)fromDay to:(NSUInteger)toDay;
+- (NSBezierPath *) makeMonthPathFrom:(NSUInteger)fromDay to:(NSUInteger)toDay;
 
 @end

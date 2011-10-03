@@ -16,9 +16,9 @@
 			<string>NSMenu</string>
 			<string>NSWindowTemplate</string>
 			<string>NSMenuItem</string>
-			<string>NSBox</string>
-			<string>NSCustomView</string>
 			<string>NSCustomObject</string>
+			<string>NSCustomView</string>
+			<string>NSBox</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1328,7 +1328,7 @@
 			<object class="NSWindowTemplate" id="835800377">
 				<int key="NSWindowStyleMask">8209</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{283, 305}, {1100, 900}}</string>
+				<string key="NSWindowRect">{{283, 305}, {900, 700}}</string>
 				<int key="NSWTFlags">611845120</int>
 				<string key="NSWindowTitle">Strategical</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -1342,10 +1342,10 @@
 						<object class="NSCustomView" id="30775061">
 							<reference key="NSNextResponder" ref="682399496"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrameSize">{900, 900}</string>
+							<string key="NSFrameSize">{700, 700}</string>
 							<reference key="NSSuperview" ref="682399496"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
+							<reference key="NSNextKeyView" ref="118040151"/>
 							<string key="NSReuseIdentifierKey">_NS:499</string>
 							<string key="NSClassName">CalendarView</string>
 						</object>
@@ -1360,9 +1360,10 @@
 									<string key="NSFrame">{{1, 1}, {0, 898}}</string>
 									<reference key="NSSuperview" ref="118040151"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 								</object>
 							</object>
-							<string key="NSFrame">{{906, 0}, {1, 900}}</string>
+							<string key="NSFrame">{{906, -200}, {1, 900}}</string>
 							<reference key="NSSuperview" ref="682399496"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="248506671"/>
@@ -1406,13 +1407,13 @@
 							</object>
 						</object>
 					</object>
-					<string key="NSFrameSize">{1100, 900}</string>
+					<string key="NSFrameSize">{900, 700}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="30775061"/>
 					<string key="NSReuseIdentifierKey">_NS:2927</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<int key="NSWindowCollectionBehavior">128</int>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -1432,7 +1433,7 @@
 					<string key="NSFrameSize">{295, 419}</string>
 					<string key="NSReuseIdentifierKey">_NS:2927</string>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -3177,8 +3178,8 @@
 						<reference key="object" ref="682399496"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="30775061"/>
 							<reference ref="118040151"/>
+							<reference ref="30775061"/>
 						</object>
 						<reference key="parent" ref="835800377"/>
 					</object>
@@ -3201,16 +3202,13 @@
 						<reference key="parent" ref="544032767"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">545</int>
-						<reference key="object" ref="30775061"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-						</object>
+						<int key="objectID">546</int>
+						<reference key="object" ref="118040151"/>
 						<reference key="parent" ref="682399496"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">546</int>
-						<reference key="object" ref="118040151"/>
+						<int key="objectID">545</int>
+						<reference key="object" ref="30775061"/>
 						<reference key="parent" ref="682399496"/>
 					</object>
 				</object>
