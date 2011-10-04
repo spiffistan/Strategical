@@ -55,6 +55,7 @@ static inline NSRect SmallRectCerterAtPointWithLength(NSPoint p, CGFloat l) {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
+
     }
     return self;
 }
@@ -64,6 +65,8 @@ static inline NSRect SmallRectCerterAtPointWithLength(NSPoint p, CGFloat l) {
     // Background
     [[NSColor clearColor] set];
     NSRectFillUsingOperation(rect, NSCompositeSourceOver);
+    
+    [[NSGraphicsContext currentContext] setShouldAntialias:YES];
     
     // Path
     // [[NSColor redColor] set];
@@ -78,12 +81,12 @@ static inline NSRect SmallRectCerterAtPointWithLength(NSPoint p, CGFloat l) {
         [self.layoutManager drawSelectionRange: self.textStorage.selectionRange selectionColor: nil];
     
     [self.layoutManager drawText];
-
+/*
     if (!self.textStorage.hasMarkedText && self.textStorage.selectionRange.length == 0)
         [self.layoutManager drawCaretAtIndex: self.textStorage.selectionRange.location];
     else if (self.textStorage.hasMarkedText && self.textStorage.markedTextSelectionRange.length == 0)
         [self.layoutManager drawCaretAtIndex: self.textStorage.selectionRange.location + self.textStorage.markedTextSelectionRange.location];
-
+*/
     [self.layoutManager endDrawText];
 
 }
@@ -237,7 +240,7 @@ static inline NSRect SmallRectCerterAtPointWithLength(NSPoint p, CGFloat l) {
 
 - (BOOL) isOpaque 
 {
-	return YES;
+	return NO;
 }
 
 - (BOOL) acceptsFirstResponder 
@@ -247,7 +250,7 @@ static inline NSRect SmallRectCerterAtPointWithLength(NSPoint p, CGFloat l) {
 
 - (BOOL)canBecomeKeyView 
 {
-    return YES;
+    return NO;
 }
 
 @end

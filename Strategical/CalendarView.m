@@ -227,7 +227,6 @@
 {        
     YLTextStorage *storage[12]; 
     
-    
     for(int i = 0; i < [monthPaths count]; i++)
     {   
         NSBezierPath *path = [monthPaths objectAtIndex:i]; 
@@ -237,10 +236,13 @@
         
         monthLabels[i].layoutManager = [YLBezierLayoutManager layoutManagerWithBezierPath: [path bezierPathByStrippingRedundantElements]];
         
-        NSMutableAttributedString *s = [[[NSMutableAttributedString alloc] initWithString: [NSString stringWithUTF8String: "January"]] autorelease];
+        NSMutableAttributedString *s = [[[NSMutableAttributedString alloc] initWithString: [NSString stringWithUTF8String: "December"]] autorelease];
         
-        //[s setAttributes: [NSDictionary dictionaryWithObjectsAndKeys: [NSFont fontWithName: @"Times" size: 32.0], NSFontAttributeName, nil] range: NSMakeRange(0, [s length])];
-        
+        [s setAttributes: [NSDictionary dictionaryWithObjectsAndKeys: 
+                           [NSFont fontWithName: @"Lucida Grande" size: 12.0], NSFontAttributeName, 
+                           [NSColor whiteColor], NSForegroundColorAttributeName, nil]
+                   range: NSMakeRange(0, [s length])];
+                
         [storage[i] loadText: s];
         monthLabels[i].textStorage = storage[i];
         

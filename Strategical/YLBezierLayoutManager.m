@@ -297,13 +297,13 @@ finalize:
             CGContextShowGlyphsAtPositions(context, _cachedFlatGlyphs + glyphOffset + runGlyphIndex, &CGPointZero, 1);
 
             // Draw Bounding Box
-//* <-- Enable by adding a '/' in the beginning of this line
+/* <-- Enable by adding a '/' in the beginning of this line
             CGRect glyphBounds = _cachedFlatGlyphImageBound[glyphOffset + runGlyphIndex];
             glyphBounds.origin.x -= position.x;
             glyphBounds.origin.y -= position.y;
             CGContextSetRGBStrokeColor(context, 0.0, 0.7, 0.7, 1.0);
             CGContextStrokeRect(context, glyphBounds);
-/**/            
+*/            
             CGContextRestoreGState(context);
             
         }
